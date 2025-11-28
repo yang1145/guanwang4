@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { FaWeixin, FaWeibo } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getSiteConfig } from '@/services/siteConfigService';
 
 const footerLinks = [
   {
@@ -33,11 +36,36 @@ const footerLinks = [
 
 export default function Footer() {
   const pathname = usePathname();
+  const [siteConfig, setSiteConfig] = useState({
+    company_name: "企业名称",
+    copyright_info: "© 企业名称. 保留所有权利.",
+    icp_number: "",
+    police_number: ""
+  });
 
   // 页面切换时的刷新机制
   useEffect(() => {
     // 当路由改变时重置页面状态
   }, [pathname]);
+
+  // 获取网站配置信息
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const config = await getSiteConfig();
+        setSiteConfig({
+          company_name: config.company_name,
+          copyright_info: config.copyright_info || `© ${new Date().getFullYear()} ${config.company_name}. 保留所有权利.`,
+          icp_number: config.icp_number,
+          police_number: config.police_number
+        });
+      } catch (error) {
+        console.error('获取网站配置失败:', error);
+      }
+    };
+
+    fetchConfig();
+  }, []);
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -51,7 +79,7 @@ export default function Footer() {
             viewport={{ once: true }}
             data-animate="active"
           >
-            <h3 className="text-2xl font-bold mb-4">企业名称</h3>
+            <h3 className="text-2xl font-bold mb-4">{siteConfig.company_name}</h3>
             <p className="text-gray-400 mb-4">
               专注行业多年，致力于为客户提供优质的产品和服务。
             </p>
@@ -123,7 +151,13 @@ export default function Footer() {
           viewport={{ once: true }}
           data-animate="active"
         >
-          <p>&copy; {new Date().getFullYear()} 企业名称. 保留所有权利.</p>
+          <p>{siteConfig.copyright_info}</p>
+          {siteConfig.icp_number && (
+            <p className="mt-1">备案号: {siteConfig.icp_number}</p>
+          )}
+          {siteConfig.police_number && (
+            <p className="mt-1">公安备案号: {siteConfig.police_number}</p>
+          )}
         </motion.div>
       </div>
     </footer>

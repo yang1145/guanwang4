@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
+import { getSiteConfig } from '@/services/siteConfigService';
 
 const navigation = [
   { name: "首页", href: "/" },
@@ -17,6 +18,7 @@ const navigation = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [companyName, setCompanyName] = useState("企业名称");
   const pathname = usePathname();
   const router = useRouter();
 
@@ -26,6 +28,20 @@ export default function Header() {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // 获取网站配置信息
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const config = await getSiteConfig();
+        setCompanyName(config.company_name);
+      } catch (error) {
+        console.error('获取网站配置失败:', error);
+      }
+    };
+
+    fetchConfig();
   }, []);
 
   // 关闭移动端菜单当路径改变时，并触发动画刷新
@@ -59,7 +75,7 @@ export default function Header() {
             transition={{ duration: 0.5 }}
           >
             <Link href="/" className="text-2xl font-bold text-blue-800">
-              企业名称
+              {companyName}
             </Link>
           </motion.div>
 

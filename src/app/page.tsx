@@ -7,6 +7,7 @@ import { FaUsers, FaCogs, FaSyncAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import HeroCarousel from "@/components/HeroCarousel";
 
 export default function Home() {
   const pathname = usePathname();
@@ -30,49 +31,8 @@ export default function Home() {
     <>
       <Header />
       
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-r from-blue-50 to-indigo-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              data-animate="active"
-            >
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
-                欢迎访问<span className="text-blue-800">企业名称</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
-                我们专注于为传统行业提供创新的解决方案，助力企业数字化转型，提升业务效率与竞争力。
-              </p>
-              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link href="/services" className="btn-primary text-center">
-                    了解我们的服务
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link href="/contact" className="btn-secondary text-center">
-                    联系我们
-                  </Link>
-                </motion.div>
-              </div>
-            </motion.div>
-            <motion.div
-              className="mt-12 lg:mt-0"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              data-animate="active"
-            >
-              <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full aspect-video flex items-center justify-center text-gray-500">
-                企业形象图
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Carousel Section */}
+      <HeroCarousel />
 
       {/* Features Section */}
       <section className="py-20 bg-white">

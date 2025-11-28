@@ -4,10 +4,14 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
-export const metadata: Metadata = {
+// 默认metadata
+const defaultMetadata: Metadata = {
   title: "企业官网模板",
   description: "适用于传统行业的简洁化企业官网模板",
 };
+
+// 导出初始metadata
+export { defaultMetadata as metadata };
 
 export default function RootLayout({
   children,
